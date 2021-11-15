@@ -70,7 +70,17 @@ activate nginx_async
 nginx_async -> async_api: Proxy request to backend
 activate async_api
 
-async_api -> Elasticsearch: Find/Suggest/CRUD Movies and People
+alt if auth required
+    async_api -> nginx_auth: Is Authenticated?
+    nginx_auth -> auth: Proxy Request
+    auth -> Redis: Is Authenticated?
+    Redis -> auth: OK/Forbidden
+    auth -> nginx_auth: OK/Forbidden
+    nginx_auth -> async_api: OK/Forbidden
+else
+    async_api -> Elasticsearch: Find/Suggest/CRUD Movies and People
+end
+
 activate Elasticsearch
 Elasticsearch --> async_api: Appropriate movies
 deactivate Elasticsearch
