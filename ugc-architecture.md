@@ -14,6 +14,13 @@ box "Async API" #LightYellow
     collections async_api
 end box
 
+box "Auth" #LightBlue
+    collections nginx_auth
+    collections auth
+    database Redis
+    database PostgresAuth
+end box
+
 box "Transport" #LightGray
     control Kafka
 end box
@@ -28,7 +35,18 @@ activate nginx_async
 nginx_async -> async_api: Proxy request to backend
 activate async_api
 
-async_api -> Kafka: Publish event
+alt if auth required
+    async_api -> nginx_auth: Is Authenticated?
+    nginx_auth -> auth: Proxy Request
+    auth -> Redis: Is Authenticated?
+    Redis -> auth: OK/Forbidden
+    auth -> nginx_auth: OK/Forbidden
+    nginx_auth -> async_api: OK/Forbidden
+else
+    async_api -> Kafka: Publish event
+end
+async_api --> nginx_async: Response/Error
+deactivate async_api
 Kafka -> ugc
 
 ugc -> Clickhouse: Save event
@@ -40,9 +58,6 @@ else
     Clickhouse -> ugc: Error
 end
 deactivate Clickhouse
-
-async_api --> nginx_async: Response/Error
-deactivate async_api
 
 nginx_async --> Client: Response/Error
 deactivate nginx_async
