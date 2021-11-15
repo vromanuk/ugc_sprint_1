@@ -14,8 +14,6 @@ box "Async API" #LightYellow
     collections async_api
 end box
 
-database Elasticsearch
-
 box "Transport" #LightGray
     control Kafka
 end box
@@ -25,15 +23,10 @@ box "UGC" #Orange
     database Clickhouse
 end box
 
-Client -> nginx_async: Find/Suggest/CRUD Movies and People
+Client -> nginx_async: Event
 activate nginx_async
 nginx_async -> async_api: Proxy request to backend
 activate async_api
-
-async_api -> Elasticsearch: Find/Suggest/CRUD Movies and People
-activate Elasticsearch
-Elasticsearch --> async_api: Appropriate movies
-deactivate Elasticsearch
 
 async_api -> Kafka: Publish event
 Kafka -> ugc
