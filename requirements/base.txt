@@ -1,4 +1,0 @@
-uvicorn==0.15.0
-fastapi==0.68.1
-orjson==3.6.3
-pydantic[dotenv]==1.8.2
