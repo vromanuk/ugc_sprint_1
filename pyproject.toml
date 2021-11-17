@@ -10,6 +10,7 @@ uvicorn = "0.15.0"
 fastapi = "0.68.1"
 orjson = "3.6.3"
 pydantic = {version = "1.8.2", extras = ["dotenv"]}
+aiokafka = "^0.7.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
