@@ -35,10 +35,10 @@ activate nginx_async
 nginx_async -> async_api: Proxy request to backend
 activate async_api
 
-alt if auth required
-    async_api -> nginx_auth: Is Authenticated?
+alt if auth required and not valid token / missing token
+    async_api -> nginx_auth: Redirect /login
     nginx_auth -> auth: Proxy Request
-    auth -> Redis: Is Authenticated?
+    auth -> Redis: Check if not blacklisted
     Redis -> auth: OK/Forbidden
     auth -> nginx_auth: OK/Forbidden
     nginx_auth -> async_api: OK/Forbidden
