@@ -12,3 +12,16 @@
 ```
 curl --location --request GET 'http://localhost/smoke'
 ```
+
+## How to test Kafka
+Для того, чтобы протестировать Kafka нужно выполнить следующие действия:
+1. Убедиться, что запущен `Zookeeper`, `Kafka`, `Clickhouse` и `Faust Worker`
+2. Выполнить скрипт `populate_clickhouse`
+3. Для отправки сообщения в консьюмер можно воспользоваться такой командой:
+```
+faust -A movie_progress send movie_progress '{"finished_at": 1234, "movie_id_user_id": "foobar"}'
+```
+4. Для того, чтобы проверить, что данные появились в `Clickhouse`, нужно выполнить такой запрос:
+```
+print(client.execute("SELECT * FROM example.test"))
+```
