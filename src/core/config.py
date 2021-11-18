@@ -9,12 +9,18 @@ from src.core.logger import LOGGING
 logging_config.dictConfig(LOGGING)
 
 
+class ClickhouseConfig(BaseSettings):
+    CLICKHOUSE_DB: str = "example.test"
+
+
 class Settings(BaseSettings):
     PROJECT_NAME: str = "ugc"
     LOG_LEVEL: str = "debug"
     API_PREFIX: str = "/api/v1"
 
     BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    clickhouse_config: ClickhouseConfig = ClickhouseConfig()
 
 
 @lru_cache()
