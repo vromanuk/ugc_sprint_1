@@ -23,6 +23,8 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
+    volumes:
+      - "kafka-data:/data/kafka/"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -31,3 +33,23 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+  clickhouse:
+    image: clickhouse/clickhouse-server:21.8.11.4
+    container_name: clickhouse
+    hostname: clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./compose-services-data/clickhouse/node1:/etc/clickhouse-server
+      - "clickhouse-data:/data/clickhouse/"
+    depends_on:
+      - zookeeper
+
+volumes:
+  kafka-data:
+  clickhouse-data:
+
+networks:
+  default:
+    name: ugc-network
