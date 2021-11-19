@@ -10,7 +10,8 @@ logging_config.dictConfig(LOGGING)
 
 
 class ClickhouseConfig(BaseSettings):
-    CLICKHOUSE_DB: str = "example.test"
+    CLICKHOUSE_DB_NAME: str = "example"
+    CLICKHOUSE_EVENT_TABLE: str = "event"
 
 
 class Settings(BaseSettings):
@@ -24,7 +25,7 @@ class Settings(BaseSettings):
 
     FAUST_PROJECT_NAME: str = "movie_progress"
     DEFAULT_NUMBER_PARTITIONS: int = 3
-    ZOOKEEPER_PORT: int = 9092
+    KAFKA_PORT: int = 9092
 
 
 @lru_cache()
