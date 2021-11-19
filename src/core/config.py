@@ -22,6 +22,10 @@ class Settings(BaseSettings):
 
     clickhouse_config: ClickhouseConfig = ClickhouseConfig()
 
+    FAUST_PROJECT_NAME: str = "movie_progress"
+    DEFAULT_NUMBER_PARTITIONS: int = 3
+    ZOOKEEPER_PORT: int = 9092
+
 
 @lru_cache()
 def get_settings():

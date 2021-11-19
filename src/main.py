@@ -17,9 +17,9 @@ app = FastAPI(
 app.router.include_router(api_router, prefix=settings.API_PREFIX)
 
 
-def get_app():
+def get_faust_app():
     return faust.App(
-        "movie_progress",
-        broker="//localhost:9092",
-        topic_partitions=4,
+        settings.FAUST_PROJECT_NAME,
+        broker=f"//localhost:{settings.ZOOKEEPER_PORT}",
+        topic_partitions=settings.DEFAULT_NUMBER_PARTITIONS,
     )
