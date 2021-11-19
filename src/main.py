@@ -1,3 +1,4 @@
+import faust
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
@@ -14,3 +15,11 @@ app = FastAPI(
 )
 
 app.router.include_router(api_router, prefix=settings.API_PREFIX)
+
+
+def get_app():
+    return faust.App(
+        "movie_progress",
+        broker="//localhost:9092",
+        topic_partitions=4,
+    )
