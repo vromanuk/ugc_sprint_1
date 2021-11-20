@@ -11,25 +11,29 @@ services:
     env_file:
       - .env
   zookeeper:
-    image: confluentinc/cp-zookeeper:6.2.0
+    image: bitnami/zookeeper:3.7.0
     container_name: zookeeper
     environment:
+      ALLOW_ANONYMOUS_LOGIN: yes
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: bitnami/kafka:3.0.0
     container_name: kafka
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"
+      - 9092:9092
     volumes:
-      - "kafka-data:/data/kafka/"
+      - kafka-data:/data/kafka/
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_INTER_BROKER_LISTENER_NAME: CLIENT
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CLIENT:PLAINTEXT,INTERNAL:PLAINTEXT
+      KAFKA_CFG_LISTENERS: CLIENT://:9092,INTERNAL://:29092
+      KAFKA_CFG_ADVERTISED_LISTENERS: CLIENT://localhost:9092,INTERNAL://broker:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -38,11 +42,12 @@ services:
     container_name: clickhouse
     hostname: clickhouse
     ports:
-      - "8123:8123"
-      - "9000:9000"
+      - 8123:8123
+      - 9000:9000
     volumes:
       - ./compose-services-data/clickhouse/node1:/etc/clickhouse-server
-      - "clickhouse-data:/data/clickhouse/"
+      - clickhouse-data:/data/clickhouse/
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/:z
     depends_on:
       - zookeeper
 
