@@ -10,8 +10,8 @@ logging_config.dictConfig(LOGGING)
 
 
 class ClickhouseConfig(BaseSettings):
-    CLICKHOUSE_DB_NAME: str = "example"
-    CLICKHOUSE_EVENT_TABLE: str = "event"
+    CLICKHOUSE_DB_NAME: str = "movies_db"
+    CLICKHOUSE_EVENT_TABLE: str = "events"
 
 
 class Settings(BaseSettings):

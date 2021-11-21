@@ -1,3 +1,4 @@
+from datetime import datetime as dt
 from typing import Optional
 
 from pydantic import BaseModel, PrivateAttr
@@ -14,3 +15,4 @@ class Event(BaseModel):
 
     finished_at: Optional[int] = 0
     movie_id_user_id: Optional[str] = ""
+    event_datetime: dt = dt.now()

@@ -35,7 +35,7 @@ class ClickhouseClient:
     def track_event(cls, event: Event):
         try:
             cls.client.execute(
-                f"INSERT INTO {event._tablename} (finished_at, movie_id_user_id) VALUES",
+                f"INSERT INTO {event._tablename} (finished_at, movie_id_user_id, event_datetime) VALUES",
                 [event.dict()],
             )
             logger.info("ack")
