@@ -7,10 +7,8 @@ from dataclasses import dataclass
 import backoff as backoff
 from clickhouse_driver import Client
 
-from src.core.config import get_settings
 from src.db.models import Event
 
-settings = get_settings()
 logger = logging.getLogger()
 
 
