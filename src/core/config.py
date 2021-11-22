@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     FAUST_PROJECT_NAME: str = "movie_progress"
     DEFAULT_NUMBER_PARTITIONS: int = 3
     KAFKA_PORT: int = 9092
+    KAFKA_HOST: str = "kafka"
 
 
 @lru_cache()
