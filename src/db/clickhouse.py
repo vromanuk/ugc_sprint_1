@@ -14,7 +14,7 @@ logger = logging.getLogger()
 
 @dataclass
 class ClickhouseClient:
-    client: Client = Client(host="localhost")
+    client: Client = Client(host="clickhouse")
 
     @classmethod
     async def track_movie_progress(cls, finished_at: int, movie_id_user_id: str):
