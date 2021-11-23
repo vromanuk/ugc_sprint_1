@@ -12,6 +12,8 @@ logging_config.dictConfig(LOGGING)
 class ClickhouseConfig(BaseSettings):
     CLICKHOUSE_DB_NAME: str = "movies_db"
     CLICKHOUSE_EVENT_TABLE: str = "events"
+    CLICKHOUSE_PORT: int = 9000
+    CLICKHOUSE_HOST: str = "clickhouse"
 
 
 class Settings(BaseSettings):

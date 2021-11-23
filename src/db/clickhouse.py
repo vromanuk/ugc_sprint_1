@@ -8,13 +8,18 @@ import backoff as backoff
 from clickhouse_driver import Client
 
 from src.db.models import Event
+from src.core.config import get_settings
 
+
+settings = get_settings()
 logger = logging.getLogger()
 
 
 @dataclass
 class ClickhouseClient:
-    client: Client = Client(host="clickhouse")
+    client: Client = Client(
+        host=settings.clickhouse_config.CLICKHOUSE_HOST,
+        port=settings.clickhouse_config.CLICKHOUSE_PORT)
 
     @classmethod
     async def track_movie_progress(cls, finished_at: int, movie_id_user_id: str):
