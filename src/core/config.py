@@ -12,6 +12,8 @@ logging_config.dictConfig(LOGGING)
 class ClickhouseConfig(BaseSettings):
     CLICKHOUSE_DB_NAME: str = "movies_db"
     CLICKHOUSE_EVENT_TABLE: str = "events"
+    CLICKHOUSE_PORT: int = 9000
+    CLICKHOUSE_HOST: str = "clickhouse"
 
 
 class Settings(BaseSettings):
@@ -26,6 +28,7 @@ class Settings(BaseSettings):
     FAUST_PROJECT_NAME: str = "movie_progress"
     DEFAULT_NUMBER_PARTITIONS: int = 3
     KAFKA_PORT: int = 9092
+    KAFKA_HOST: str = "kafka"
 
 
 @lru_cache()

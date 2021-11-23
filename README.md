@@ -26,5 +26,11 @@ faust -A src.agents send movie_progress '{"finished_at": 1234, "movie_id_user_id
 ```
 4. Для того, чтобы проверить, что данные появились в `Clickhouse`, нужно выполнить такой запрос:
 ```
-print(client.execute("SELECT * FROM example.test"))
+> docker exec -it <container_id_with_app> /bin/sh
+> python
+
+from clickhouse_driver import Client
+client = Client(host="clickhouse")
+print(client.execute("SELECT * FROM movies_db.events"))
+
 ```
